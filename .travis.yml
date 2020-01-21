@@ -1,0 +1,21 @@
+language: python
+python:
+  - "3.7"
+cache: pip
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+  - pip install coverage flake8 codecov
+
+# setup the test database
+before_script:
+  - psql -c 'create database expenses_test;' -U postgres
+services:
+  - postgresql
+
+# command to run tests
+script:
+  - flake8 expenses/
+  - coverage run manage.py test
+after_success:
+  - codecov
