@@ -8,5 +8,8 @@ class Error:
         raise GraphQLError(
             AUTH_ERROR["email_username_in_use"].format(key=key, value=value))
 
+    def invalid_credentials(self):
+        raise GraphQLError(AUTH_ERROR["invalid_credentials"])
+
 
 error = Error()
