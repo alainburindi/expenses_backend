@@ -1,6 +1,9 @@
 import json
 from django.test import TestCase, Client
 from expenses.apps.authentication.models import User
+from expenses.tests.test_fixtures.authentication import (
+    login_user
+)
 
 
 class TestConfig(TestCase):
@@ -28,23 +31,23 @@ class TestConfig(TestCase):
         json_response = json.loads(response.content.decode())
         return json_response
 
-    # @classmethod
-    # def query_with_token(cls, access_token, query: str = None):
-    #     # Method to run queries and mutations using a logged in user
-    #     # with an authentication token
-    #     body = dict()
-    #     body['query'] = query
-    #     http_auth = 'JWT {}'.format(access_token)
-    #     url = '/expenses/'
-    #     content_type = 'application/json'
+    @classmethod
+    def query_with_token(cls, access_token, query: str = None):
+        # Method to run queries and mutations using a logged in user
+        # with an authentication token
+        body = dict()
+        body['query'] = query
+        http_auth = 'JWT {}'.format(access_token)
+        url = '/expenses/'
+        content_type = 'application/json'
 
-    #     response = cls.client.post(
-    #         url,
-    #         json.dumps(body),
-    #         HTTP_AUTHORIZATION=http_auth,
-    #         content_type=content_type)
-    #     json_response = json.loads(response.content.decode())
-    #     return json_response
+        response = cls.client.post(
+            url,
+            json.dumps(body),
+            HTTP_AUTHORIZATION=http_auth,
+            content_type=content_type)
+        json_response = json.loads(response.content.decode())
+        return json_response
 
     def setUp(self):
         self.default_user_data = {
@@ -53,6 +56,7 @@ class TestConfig(TestCase):
         }
 
         self.default_user = self.register_user(self.default_user_data)
+        self.access_token = self.login_user(self.default_user_data)
 
     def register_user(self, user):
         """
@@ -65,3 +69,7 @@ class TestConfig(TestCase):
         user.is_active = True
         user.save()
         return user
+
+    def login_user(self, user):
+        response = self.query(login_user.format(**user))
+        return response['data']['loginUser']['authToken']

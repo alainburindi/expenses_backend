@@ -1,6 +1,7 @@
 from expenses.tests.base_config import TestConfig
 from expenses.tests.test_fixtures.authentication import (
-    create_user, login_user, login_empty_email_and_username
+    create_user, login_user, login_empty_email_and_username,
+    get_logged_in_user
 )
 from expenses.utils.messages.authentication_response import (
     AUTH_SUCCESS, AUTH_ERROR
@@ -60,4 +61,18 @@ class TestAuth(TestConfig):
     def test_unexisting_user(self):
         response = self.query(login_user.format(**self.user))
         self.assertEqual(AUTH_ERROR['invalid_credentials'],
+                         response['errors'][0]['message'])
+
+    def test_get_current_user(self):
+        response = self.query_with_token(
+            self.access_token,
+            get_logged_in_user
+        )
+        self.assertIsNotNone(response['data']['me'])
+        self.assertEqual(
+            self.default_user_data['email'], response['data']['me']['email'])
+
+    def test_get_current_user_with_empty_token(self):
+        response = self.query(get_logged_in_user)
+        self.assertEqual(AUTH_ERROR["not_logged_in"],
                          response['errors'][0]['message'])

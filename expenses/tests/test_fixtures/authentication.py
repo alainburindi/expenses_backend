@@ -26,3 +26,13 @@ mutation{
     }
   }
 '''
+
+get_logged_in_user = '''
+query{
+  me{
+    email
+    username
+    isActive
+  }
+}
+'''
