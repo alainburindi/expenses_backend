@@ -27,7 +27,8 @@ class CreateUser(graphene.Mutation):
         validator.validate_user(**kwargs)
         user = User(
             username=username,
-            email=email
+            email=email,
+            is_active=True  # waiting for email verification
         )
         user.set_password(password)
         user.save()
