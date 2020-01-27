@@ -14,3 +14,17 @@ get_my_expenses = '''{
     name
   }
 }'''
+
+update_expense = '''
+mutation{{
+  updateExpense(id:"{id}", description: "{description}",
+  name: "{name}", amount: {amount}){{
+    updated{{
+      name
+      description
+      amount
+    }}
+    message
+  }}
+}}
+'''
