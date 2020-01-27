@@ -5,6 +5,7 @@ from django.db.models import Q
 
 from expenses.utils.messages.authentication_response import AUTH_ERROR
 from .responses import error
+from expenses.utils.messages.expense_response import ERROR
 
 
 class Validator:
@@ -47,6 +48,17 @@ class Validator:
             error.used_email_or_username("email", email)
         elif username in [user.username for user in users]:
             error.used_email_or_username("username", username)
+
+    def validate_min_amount(self, value):
+        """
+        Validate expense minimum value
+        Args:
+            value(int): the expense amount
+        returns:
+            error(GraphQLError): if value is less than 1
+        """
+        if value < 1:
+            raise GraphQLError(ERROR["less_amount"])
 
 
 validator = Validator()
