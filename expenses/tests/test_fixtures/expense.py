@@ -7,3 +7,10 @@ create_expense = '''mutation{{
     message
   }}
 }}'''
+
+get_my_expenses = '''{
+  myExpenses{
+    id
+    name
+  }
+}'''

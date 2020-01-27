@@ -4,6 +4,7 @@ from expenses.apps.authentication.models import User
 from expenses.tests.test_fixtures.authentication import (
     login_user
 )
+from expenses.apps.expense.models import Expense
 
 
 class TestConfig(TestCase):
@@ -57,6 +58,7 @@ class TestConfig(TestCase):
 
         self.default_user = self.register_user(self.default_user_data)
         self.access_token = self.login_user(self.default_user_data)
+        self.expense = self.create_expense()
 
     def register_user(self, user):
         """
@@ -73,3 +75,7 @@ class TestConfig(TestCase):
     def login_user(self, user):
         response = self.query(login_user.format(**user))
         return response['data']['loginUser']['authToken']
+
+    def create_expense(self):
+        return Expense.objects.create(name="test", amount=200,
+                                      user=self.default_user)
