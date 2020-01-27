@@ -56,9 +56,17 @@ class TestConfig(TestCase):
             "username": "Alainb", "password": "Password123"
         }
 
+        self.second_user_data = {
+            "email": "second@expenses.com",
+            "username": "Second", "password": "Password123"
+        }
+
         self.default_user = self.register_user(self.default_user_data)
         self.access_token = self.login_user(self.default_user_data)
-        self.expense = self.create_expense()
+        self.expense = self.create_expense(self.default_user)
+        self.second_user = self.register_user(self.second_user_data)
+        self.second_user_expense = self.create_expense(self.second_user)
+        self.second_user_access_token = self.login_user(self.second_user_data)
 
     def register_user(self, user):
         """
@@ -76,6 +84,6 @@ class TestConfig(TestCase):
         response = self.query(login_user.format(**user))
         return response['data']['loginUser']['authToken']
 
-    def create_expense(self):
+    def create_expense(self, user):
         return Expense.objects.create(name="test", amount=200,
-                                      user=self.default_user)
+                                      user=user)
