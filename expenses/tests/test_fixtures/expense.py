@@ -28,3 +28,12 @@ mutation{{
   }}
 }}
 '''
+
+delete = '''
+mutation{{
+  deleteExpense(expensesId: {}){{
+    message
+    failed
+  }}
+}}
+'''

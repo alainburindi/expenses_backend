@@ -1,6 +1,6 @@
 from ..base_config import TestConfig
 from ..test_fixtures.expense import (
-    create_expense, get_my_expenses, update_expense
+    create_expense, get_my_expenses, update_expense, delete
 )
 from expenses.utils.messages.expense_response import SUCCESS, ERROR
 
@@ -55,3 +55,18 @@ class TestExpense(TestConfig):
             self.second_user_access_token, update_expense.format(**data))
         self.assertEqual(response["errors"][0]
                          ["message"], ERROR["not_owner"])
+
+    def test_delete_expense(self):
+        response = self.query_with_token(
+            self.access_token, delete.format('["{}"]'.format(self.expense.id)))
+        self.assertEqual(response['data']['deleteExpense']['message'],
+                         SUCCESS['deleted'].format(1))
+
+    def test_delete_expense_failure(self):
+        response = self.query_with_token(
+            self.access_token, delete.format('["{}"]'.format(
+                self.second_user_expense.id)
+            )
+        )
+        self.assertEqual(response["errors"][0]["message"],
+                         ERROR['delete_failed'])
