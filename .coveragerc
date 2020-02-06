@@ -6,3 +6,5 @@
     manage.py
     /venv
     */lib/python3.7/*
+    expenses/manager.py
+    expenses/model.py

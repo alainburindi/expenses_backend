@@ -3,11 +3,10 @@ import uuid
 
 from expenses.apps.authentication.models import User
 from django.core.validators import MinValueValidator
+from expenses.model import SoftDeleteModel
 
-# Create your models here.
 
-
-class Expense(models.Model):
+class Expense(SoftDeleteModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(null=False, max_length=100)
     amount = models.PositiveIntegerField(
