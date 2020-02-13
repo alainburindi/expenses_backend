@@ -5,6 +5,7 @@ from expenses.apps.authentication import schema as auth_schema
 from expenses.apps.authentication.queries import auth_queries
 from expenses.apps.expense import schema as expense_schema
 from expenses.apps.expense.queries import expense_queries
+from expenses.apps.plan import schema as plan_schema
 
 
 class Query(auth_queries.Query, expense_queries.Query, graphene.ObjectType):
@@ -12,7 +13,8 @@ class Query(auth_queries.Query, expense_queries.Query, graphene.ObjectType):
 
 
 class Mutation(
-    auth_schema.Mutation, expense_schema.Mutation, graphene.ObjectType
+    auth_schema.Mutation, expense_schema.Mutation,
+    plan_schema.Mutation, graphene.ObjectType
 ):
     token_auth = graphql_jwt.ObtainJSONWebToken().Field()
     verify_token = graphql_jwt.Verify.Field()

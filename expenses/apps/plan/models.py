@@ -11,5 +11,5 @@ class Plan(SoftDeleteModel):
         null=False, validators=[MinValueValidator(1)])
     description = models.CharField(null=True, max_length=250)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    to_be_done = models.DateTimeField(null=False)
+    due_date = models.DateField(null=False)
     done_date = models.DateTimeField(blank=True, null=True)

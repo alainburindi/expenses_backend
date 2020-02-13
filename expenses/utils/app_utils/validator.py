@@ -2,10 +2,12 @@ import re
 from graphql import GraphQLError
 from expenses.apps.authentication.models import User
 from django.db.models import Q
+import datetime
 
 from expenses.utils.messages.authentication_response import AUTH_ERROR
 from .responses import error
 from expenses.utils.messages.expense_response import ERROR
+from expenses.utils.messages import plan_response
 
 
 class Validator:
@@ -59,6 +61,10 @@ class Validator:
         """
         if value < 1:
             raise GraphQLError(ERROR["less_amount"])
+
+    def valide_plan_due_date(self, value):
+        if value < datetime.datetime.today().date():
+            raise GraphQLError(plan_response.ERROR["passed_due_date"])
 
 
 validator = Validator()
