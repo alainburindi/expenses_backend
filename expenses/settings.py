@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'graphene_django',
     'expenses.apps.authentication',
     'expenses.apps.expense',
+    'expenses.apps.plan',
 ]
 
 AUTH_USER_MODEL = 'authentication.User'

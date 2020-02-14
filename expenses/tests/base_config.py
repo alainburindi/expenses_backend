@@ -1,4 +1,5 @@
 import json
+import datetime
 from django.test import TestCase, Client
 from expenses.apps.authentication.models import User
 from expenses.tests.test_fixtures.authentication import (
@@ -59,6 +60,14 @@ class TestConfig(TestCase):
         self.second_user_data = {
             "email": "second@expenses.com",
             "username": "Second", "password": "Password123"
+        }
+
+        self.plan_data = {
+            "name": "this is a plan",
+            "amount": 5,
+            "dueDate": datetime.datetime.today().date(),
+            "description": "this is the description,"
+            "may be why we need the plan"
         }
 
         self.default_user = self.register_user(self.default_user_data)
