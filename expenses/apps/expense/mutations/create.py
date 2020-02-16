@@ -19,7 +19,7 @@ class CreateExpense(graphene.Mutation):
     @login_required
     def mutate(self, info, **kwargs):
         amount = kwargs.get('amount')
-        validator.validate_min_amount(amount)
+        validator.validate_min_amount(kwargs)
         expense = Expense.objects.create(
             amount=amount,
             name=kwargs.get('name'),

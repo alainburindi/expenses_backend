@@ -3,5 +3,6 @@ ERROR = {
 }
 
 SUCCES = {
-    "created": "plan created successfully"
+    "created": "plan created successfully",
+    "updated": "plan updated successfully",
 }

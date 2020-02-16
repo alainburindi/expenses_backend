@@ -3,29 +3,31 @@ from graphql_jwt.decorators import login_required
 
 from ..types import PlanType
 from expenses.utils.app_utils.validator import validator
-from ..models import Plan
 from expenses.utils.messages.plan_response import SUCCES
 
 
-class CreatePlan(graphene.Mutation):
+class UpdatePlan(graphene.Mutation):
     plan = graphene.Field(PlanType)
     message = graphene.String()
 
     class Arguments:
-        name = graphene.String(required=True)
+        id = graphene.UUID(required=True)
         description = graphene.String()
-        amount = graphene.Int(required=True)
-        due_date = graphene.Date(required=True, )
+        amount = graphene.Int()
+        due_date = graphene.Date()
+        name = graphene.String()
 
     @login_required
     def mutate(self, info, **kwargs):
+
         validator.validate_min_amount(kwargs)
         validator.valide_plan_due_date(kwargs)
-        plan = Plan(
-            user=info.context.user
-        )
+        # get the plan from the user's plan set
+        plan = info.context.user.plan_set.get(id=kwargs.get('id'))
+
         for arg in kwargs:
             setattr(plan, arg, kwargs[arg])
+
         plan.save()
 
-        return CreatePlan(message=SUCCES["created"], plan=plan)
+        return UpdatePlan(message=SUCCES["updated"], plan=plan)

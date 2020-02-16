@@ -51,19 +51,31 @@ class Validator:
         elif username in [user.username for user in users]:
             error.used_email_or_username("username", username)
 
-    def validate_min_amount(self, value):
+    def validate_min_amount(self, kwargs):
         """
-        Validate expense minimum value
+        Validate amount minimum value
         Args:
-            value(int): the expense amount
+            kwargs(dict): containing the request data
         returns:
-            error(GraphQLError): if value is less than 1
+            error(GraphQLError): if amount is less than 1
         """
-        if value < 1:
+
+        amount = kwargs.get('amount') or 1
+
+        if amount < 1:
             raise GraphQLError(ERROR["less_amount"])
 
-    def valide_plan_due_date(self, value):
-        if value < datetime.datetime.today().date():
+    def valide_plan_due_date(self, kwargs):
+        """
+        Validate plan due date
+        Args:
+            kwargs(dict): containing the request data
+        returns:
+            error(GraphQLError): if due date has already passed
+        """
+        today = datetime.datetime.today().date()
+        due_date = kwargs.get('due_date') or today
+        if due_date < today:
             raise GraphQLError(plan_response.ERROR["passed_due_date"])
 
 
