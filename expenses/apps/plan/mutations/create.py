@@ -4,7 +4,7 @@ from graphql_jwt.decorators import login_required
 from ..types import PlanType
 from expenses.utils.app_utils.validator import validator
 from ..models import Plan
-from expenses.utils.messages.plan_response import SUCCES
+from expenses.utils.messages.plan_response import SUCCESS
 
 
 class CreatePlan(graphene.Mutation):
@@ -28,4 +28,4 @@ class CreatePlan(graphene.Mutation):
             setattr(plan, arg, kwargs[arg])
         plan.save()
 
-        return CreatePlan(message=SUCCES["created"], plan=plan)
+        return CreatePlan(message=SUCCESS["created"], plan=plan)

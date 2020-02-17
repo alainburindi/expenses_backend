@@ -7,7 +7,7 @@ Summarise the main tasks handled in the pull request
 Describe (in detail) what the task completed in the pull request does as per stated in the
 pivotal tracker story
 
-<!-- **How should this be manually tested?**
+**How should this be manually tested?**
 
 Give bullet point instructions on how to setup the code and test it manually (Assume no prior experience on python)
 
@@ -25,4 +25,4 @@ You can have screenshots where applicable
 
 **Questions:**
 
-If something is unclear or you want some questions to be addressed by your peers, mention them here -->
+If something is unclear or you want some questions to be addressed by your peers, mention them here
