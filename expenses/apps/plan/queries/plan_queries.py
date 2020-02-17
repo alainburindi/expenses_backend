@@ -12,5 +12,5 @@ class Query(graphene.ObjectType):
     @login_required
     def resolve_my_plans(self, info, **kwargs):
         search = kwargs.get('search')
-        user_plans = info.context.user.plan_set.all()
-        return user_plans.filter(name__icontains=search) if search else user_plans
+        user_plans = info.context.user.plan_set
+        return user_plans.filter(name__icontains=search) if search else user_plans.all()
