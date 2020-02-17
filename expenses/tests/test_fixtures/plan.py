@@ -29,3 +29,12 @@ mutation{{
   }}
 }}
 '''
+
+delete = '''
+mutation{{
+  deletePlan(ids: {}){{
+    message
+    failed
+  }}
+}}
+'''

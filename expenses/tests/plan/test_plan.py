@@ -9,7 +9,7 @@ class TestPlan(TestConfig):
             self.access_token, plan_fixtures.create_plan.format(
                 **self.plan_data)
         )
-        self.assertEqual(plan_response.SUCCES["created"],
+        self.assertEqual(plan_response.SUCCESS["created"],
                          response["data"]["createPlan"]["message"])
         self.assertDictContainsSubset(
             response["data"]["createPlan"]["plan"], self.plan_data)
@@ -32,3 +32,20 @@ class TestPlan(TestConfig):
         )
         self.assertEqual(self.plan_data["name"],
                          response["data"]["updatePlan"]["plan"]["name"])
+
+    def test_delete_plan(self):
+        response = self.query_with_token(
+            self.access_token, plan_fixtures.delete.format('["{}"]'.format(
+                self.plan.id)
+            )
+        )
+        self.assertEqual(response['data']['deletePlan']['message'],
+                         plan_response.SUCCESS['deleted'].format(1))
+
+    def test_delete_someone_plan(self):
+        response = self.query_with_token(
+            self.second_user_access_token, plan_fixtures.delete.format(
+                '["{}"]'.format(self.plan.id))
+        )
+        self.assertEqual(plan_response.ERROR["delete_failed"],
+                         response["errors"][0]["message"])
