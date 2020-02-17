@@ -20,14 +20,13 @@ class UpdateExpense(graphene.Mutation):
 
     @login_required
     def mutate(self, info, **kwargs):
-        amount = kwargs.get('amount')
+        validator.validate_min_amount(kwargs)
+
         expense = Expense.objects.get(id=kwargs.get('id'))
         if expense.user != info.context.user:
             raise GraphQLError(ERROR["not_owner"])
 
-        if amount:
-            validator.validate_min_amount(amount)
-            expense.amount = amount
-        expense.name = kwargs.get('name') or expense.name
-        expense.description = kwargs.get('description') or expense.description
+        for arg in kwargs:
+            setattr(expense, arg, kwargs[arg])
+        expense.save()
         return UpdateExpense(updated=expense, message=SUCCESS["updated"])

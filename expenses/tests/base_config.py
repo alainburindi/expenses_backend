@@ -6,6 +6,7 @@ from expenses.tests.test_fixtures.authentication import (
     login_user
 )
 from expenses.apps.expense.models import Expense
+from expenses.apps.plan.models import Plan
 
 
 class TestConfig(TestCase):
@@ -65,7 +66,7 @@ class TestConfig(TestCase):
         self.plan_data = {
             "name": "this is a plan",
             "amount": 5,
-            "dueDate": datetime.datetime.today().date(),
+            "due_date": datetime.datetime.today().date(),
             "description": "this is the description,"
             "may be why we need the plan"
         }
@@ -76,6 +77,7 @@ class TestConfig(TestCase):
         self.second_user = self.register_user(self.second_user_data)
         self.second_user_expense = self.create_expense(self.second_user)
         self.second_user_access_token = self.login_user(self.second_user_data)
+        self.plan = self.create_plan(self.default_user)
 
     def register_user(self, user):
         """
@@ -96,3 +98,6 @@ class TestConfig(TestCase):
     def create_expense(self, user):
         return Expense.objects.create(name="test", amount=200,
                                       user=user)
+
+    def create_plan(self, user):
+        return Plan.objects.create(**self.plan_data, user=user)
