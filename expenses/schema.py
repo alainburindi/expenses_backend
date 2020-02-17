@@ -6,9 +6,12 @@ from expenses.apps.authentication.queries import auth_queries
 from expenses.apps.expense import schema as expense_schema
 from expenses.apps.expense.queries import expense_queries
 from expenses.apps.plan import schema as plan_schema
+from expenses.apps.plan.queries import plan_queries
 
 
-class Query(auth_queries.Query, expense_queries.Query, graphene.ObjectType):
+class Query(auth_queries.Query, expense_queries.Query,
+            plan_queries.Query, graphene.ObjectType
+            ):
     pass
 
 

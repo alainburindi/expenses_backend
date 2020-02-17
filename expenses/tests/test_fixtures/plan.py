@@ -38,3 +38,13 @@ mutation{{
   }}
 }}
 '''
+
+get_my_plans = '''
+query{
+  myPlans{
+    name
+    description
+    amount
+  }
+}
+'''

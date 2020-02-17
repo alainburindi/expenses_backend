@@ -49,3 +49,11 @@ class TestPlan(TestConfig):
         )
         self.assertEqual(plan_response.ERROR["delete_failed"],
                          response["errors"][0]["message"])
+
+    def test_get_my_plans(self):
+
+        response = self.query_with_token(
+            self.access_token, plan_fixtures.get_my_plans)
+        self.assertEqual(1, len(response["data"]["myPlans"]))
+        self.assertDictContainsSubset(
+            response["data"]["myPlans"][0], self.plan_data)
